@@ -29,7 +29,7 @@ with cairo.SVGSurface("./Vectors/geek.svg", 700, 700) as surface:
     context.move_to(x, y) 
   
     # draw the curve for smile 
-    context.curve_to(x1, y1, x2, y2, x3, y3) 
+    context.line_to(x1, y1) 
   
     # setting color of the context 
     context.set_source_rgba(0.4, 1, 0.4, 1) 

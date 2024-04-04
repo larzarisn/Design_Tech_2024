@@ -2,7 +2,7 @@
 import os
 import file_to_vector
 
-folder_path = "C:/Users/larsn/Desktop/Design tech/Fritzing/Temp testing" # replace this with a dynamic link, will happen with GUI
+folder_path = "C:/Users/larsn/Desktop/Design Tech 2024 git/Design_Tech_2024/Fritzing/Temp testing" # replace this with a dynamic link, will happen with GUI
 
 gerber_files = os.listdir(folder_path)
 
@@ -19,7 +19,7 @@ for gerber_file in gerber_files: # loop over all gerber files and sort them into
             gerber_layers["bottom"] = [gerber_file]
     elif "top" in gerber_file.lower():
         try:
-            testing = file_to_vector.vector_creator(gerber_file_path, 0)
+            testing = file_to_vector.vector_creator(gerber_file_path, gerber_file, 0)
             gerber_layers["top"].append(gerber_file)
         except Exception as exception:
             print(exception)
