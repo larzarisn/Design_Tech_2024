@@ -7,8 +7,8 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
     gerber_file_extensionless = gerber_file_name.partition(".")[0]
     print(f"./Vectors/{gerber_file_extensionless}.svg")
     with cairo.SVGSurface(f"./Vectors/{gerber_file_extensionless},svg", 700, 700) as svg_layer: 
-        cario_context = cairo.Context(svg_layer)
-        
+        cairo_context = cairo.Context(svg_layer)
+
         gerber_file = open(gerber_file_path, "r")
         instruction_array = gerber_file.readlines()
         # have to loop over twice: once to get the vectors of the shapes and what tool to use, then to actually make the shapes in the svg
@@ -26,9 +26,10 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
             aperture_instruction_dict[aperture[0]] = [aperture[1]]
         for instruction in instruction_array:
             if re.match(".*D([1-9][0-9]).*", instruction):
-                print(instruction)
                 current_aperture = re.findall(".*D([1-9][0-9]).*", instruction)[0]
-            
+                print(current_aperture)
+                print(aperture_instruction_dict[current_aperture])
+                cairo_context.set_line_width()
         # tool_instruction_dict = {}
         # for instruction in instruction_array: # REGEX
         #     if instruction.startswith("%ADD"):
