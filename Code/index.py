@@ -11,15 +11,18 @@ gerber_layers = {}
 for gerber_file in gerber_files: # loop over all gerber files and sort them into layers, this will get messy, needs fixing once operational.
     gerber_file_path = folder_path + "/" + gerber_file
     print(gerber_file_path)
+
     if "bottom" in gerber_file.lower():
         try:
+            print(gerber_file)
+            testing = file_to_vector.vector_creator(gerber_file_path, gerber_file, 0)
             gerber_layers["bottom"].append(gerber_file)
         except Exception as exception:
             print(exception)
             gerber_layers["bottom"] = [gerber_file]
     elif "top" in gerber_file.lower():
         try:
-            testing = file_to_vector.vector_creator(gerber_file_path, gerber_file, 0)
+            # testing = file_to_vector.vector_creator(gerber_file_path, gerber_file, 0)
             gerber_layers["top"].append(gerber_file)
         except Exception as exception:
             print(exception)
@@ -28,6 +31,7 @@ for gerber_file in gerber_files: # loop over all gerber files and sort them into
         try:
             gerber_layers["other"].append(gerber_file)
         except:
+            print("else")
             gerber_layers["other"] = [gerber_file]
 
 # now gerber_layers is a dict with split layers that can be used to turn the layers into independant images.

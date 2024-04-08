@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="700" viewBox="0 0 700 700">
-<path fill="none" stroke-width="0.01" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(40%, 100%, 40%)" stroke-opacity="1" stroke-miterlimit="10" d="M 0.884152 0.910374 L 0 0 M 0.776747 0.837422 L 0 0 M 0.952405 0.0897935 L 0 0 M 0.701468 0.0750725 L 0 0 M 0.694196 0.60505 L 0 0 M 0.491786 0.354269 L 0 0 M 0.784715 0.31115 L 0 0 M 0.501038 0.281881 L 0 0 M 0.94659 0.191842 L 0 0 M 0.869587 0.683817 L 0 0 " transform="matrix(700, 0, 0, 700, 0, 0)"/>
+<path fill="none" stroke-width="0.74" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(40%, 100%, 40%)" stroke-opacity="1" stroke-miterlimit="10" d="M 400 600 L 0 0 "/>
 </svg>
