@@ -1,6 +1,7 @@
 
 # importing pycairo 
 import cairo 
+import random
   
 # creating a SVG surface 
 # here geek is file name & 700, 700 is dimension 
@@ -8,28 +9,13 @@ with cairo.SVGSurface("./Vectors/geek.svg", 700, 700) as surface:
   
     # creating a cairo context object 
     context = cairo.Context(surface) 
-  
-    # creating a rectangle(square) for left eye 
-    context.rectangle(100, 100, 100, 100) 
-  
-    # creating a rectangle(square) for right eye 
-    context.rectangle(500, 100, 100, 100) 
-  
-    # creating position for the curves 
-    x, y, x1, y1 = 0.1, 0.5, 0.4, 0.9
-    x2, y2, x3, y3 = 0.4, 0.1, 0.9, 0.6
-  
-    # setting scale of the context 
+    context.set_line_width(0.01)
+    i = 0
+    while i < 10:
+        i = i + 1
+        context.move_to(random.uniform(0, 700), random.uniform(0, 700))
+        context.line_to(0, 0)
     context.scale(700, 700) 
-  
-    # setting line width of the context 
-    context.set_line_width(0.04) 
-  
-    # move the context to x,y position 
-    context.move_to(x, y) 
-  
-    # draw the curve for smile 
-    context.line_to(x1, y1) 
   
     # setting color of the context 
     context.set_source_rgba(0.4, 1, 0.4, 1) 
