@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 700 700">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke-width: 0px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7 {
+        fill: none;
+        stroke: blue;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-4 {
+        stroke-width: .1px;
+      }
+
+      .cls-5 {
+        stroke-width: 0px;
+      }
+
+      .cls-6 {
+        stroke-width: 0px;
+      }
+
+      .cls-7 {
+        stroke-width: 0px;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M3.2,1.4h0M3.3,1.4h0"/>
+  <path class="cls-7" d="M3.4,1.4h0"/>
+  <path class="cls-4" d="M3.1,1.7h0M3.5,1.7h0"/>
+  <path class="cls-5" d="M3.2.4h0M3.3.4h0M3.4.4h0M3.5.4h0M3.6.4h0M2.8,2.3h0M2.7,2.3h0M2.6,2.3h0M2.5,2.3h0M2.4,2.3h0M2.3,2.3h0M2.2,2.3h0M2.1,2.3h0M2,2.3h0M1.9,2.3h0M3.6,2.3h0M3.5,2.3h0M3.4,2.3h0M3.3,2.3h0M3.2,2.3h0M3.1,2.3h0M3,2.3h0M2.9,2.3h0M2.3.4h0M2.2.4h0M2.4.4h0M2.5.4h0M2.6.4h0M2.7.4h0M2.8.4h0M2.9.4h0M3.1.4h0"/>
+  <path class="cls-2" d="M2.9,1.1h0M2.9,1h0M2.9.9h0M2.9.9h0"/>
+  <path class="cls-3" d="M2.5,1.8h0M2.5,1.4h0M2.6,1.8h0M2.6,1.4h0M2.7,1.8h0M2.7,1.4h0"/>
+  <path class="cls-6" d="M2.5,2.2v-.5M2.6,2.2v-.5M2.7,2.2v-.5M2.5.9v.4M2.5.9h0M2.9.9h-.3M2.6,1v.3M2.6.9h0M2.9.9h-.2M2.7,1.2v.2M2.7,1.1h0M2.9,1.1h-.2M3.2,1h-.3M3.2,1.4v-.4M2.9.6h0M3.1.6h-.2M2.8.6v-.2M3.2.7h0M3.2,1v-.4M3.1.5h0M3.3.6v.8M3.2.6h0M3.2.6h0M3.1.4h0"/>
+</svg>
