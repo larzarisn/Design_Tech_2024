@@ -7,6 +7,7 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
     gerber_file_extensionless = gerber_file_name.partition(".")[0]
     print(f"./Vectors/{gerber_file_extensionless}.svg")
     with cairo.SVGSurface(f"./Vectors/{gerber_file_extensionless}.svg", 700, 700) as svg_layer: 
+        vector_scale_factor = 10
         cairo_context = cairo.Context(svg_layer)
         gerber_file = open(gerber_file_path, "r")   
         instruction_array = gerber_file.readlines()
@@ -33,11 +34,11 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
                 cairo_context.stroke()
 
             if instruction.startswith("X"):
-                cairo_context.set_line_width(float(aperture_instruction_dict[current_aperture][1])) 
+                cairo_context.set_line_width(float(aperture_instruction_dict[current_aperture][1])*vector_scale_factor) 
                 cairo_context.set_line_cap(1)
                 cairo_context.set_source_rgba(0, 0, 1, 1)
-                to_x_coord = float(re.findall("X(.*)Y", instruction)[0])*pow(10, -1*scale)
-                to_y_coord = float(re.findall("Y(.*)D", instruction)[0])*pow(10, -1*scale)
+                to_x_coord = float(re.findall("X(.*)Y", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
+                to_y_coord = float(re.findall("Y(.*)D", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
                 print(f"current coordinates: y: {to_y_coord} x: {to_x_coord}  using aperture {current_aperture} with width of {cairo_context.get_line_width()}")
 
                 if re.match(".*D01.*", instruction):
