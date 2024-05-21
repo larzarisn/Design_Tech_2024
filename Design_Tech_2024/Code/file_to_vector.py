@@ -26,11 +26,12 @@ def return_line_coordinates(x_coord, y_coord, start_x_coord, start_y_coord, curr
     # using pythag for the length:
     segment_length = math.hypot(delta_x, delta_y)
 
+    # using for loops to generate points that go around a circle at the end
     for i in range(num_circle_points + 2):
         t = i*(math.pi/(num_circle_points + 1))
         point_gen = return_circle_coordinates(-delta_x, delta_y, current_width, segment_length, x_coord, y_coord, t)
         return_point_list.append(point_gen)
-
+    # and doing the same thing for the circle at the start
     for i in range(num_circle_points + 2):
         t = i*(math.pi/(num_circle_points + 1))
         point_gen = return_circle_coordinates(delta_x, -delta_y, current_width, segment_length, start_x_coord, start_y_coord, t)
@@ -39,6 +40,17 @@ def return_line_coordinates(x_coord, y_coord, start_x_coord, start_y_coord, curr
     # returning points in touple form to make it easier to identify x,y.
     return return_point_list
 
+# this generates a simple circle around x_coord and y_coord with a radius of current width and a definition of num_flash_points
+def return_flash_coordinates(x_coord, y_coord, current_width, num_flash_points):
+    return_point_list = []
+
+    for i in range(num_flash_points):
+        t = i*(2*math.pi/(num_flash_points))
+        x_point_gen = 0.5*current_width*math.cos(t) + x_coord
+        y_point_gen = 0.5*current_width*math.sin(t) + y_coord
+        return_point_list.append([x_point_gen,y_point_gen])
+
+    return return_point_list
 # draws the trace from start to finish, capping off the end.
 def draw_trace(point_list, cairo_context):
     cairo_context.set_line_width(1) 
@@ -56,7 +68,8 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
     with cairo.SVGSurface(f"./Design_Tech_2024/Vectors/{gerber_file_extensionless}.svg", 1500, 1500) as svg_layer: 
         # user variables to be set
         vector_scale_factor = 500
-        num_circle_points = 0
+        num_circle_points = 0 # this is the number of points in the end cap circles of the traces
+        num_flash_points = 3 # this is the number of points in a cirlce cannot be below 3
         # getting variables ready
         cairo_context = cairo.Context(svg_layer)
         gerber_file = open(gerber_file_path, "r")   
@@ -68,7 +81,6 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
         current_aperture = "NaN" 
         last_x_coord = 0 # setting this for later because of weird for loop behavior.
         last_y_coord = 0
-        trace_edge_dict = {"positive":[], "negative":[]} # Stores the line start and end locations for each part of the line post offset.
 
         for aperture in aperture_list:
             aperture_instruction_dict[aperture[0]] = aperture[1].split(",") # makes an aperture with the shape information and the size information
@@ -95,8 +107,11 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
                     cairo_context.move_to(to_x_coord, to_y_coord)
 
                 if re.match(".*D03.*", instruction): # This needs to move to a point, create a single aperture point and stop. (ie it makes a circle with the apertures width)
-                    cairo_context.move_to(to_x_coord, to_y_coord) 
-                    cairo_context.line_to(to_x_coord, to_y_coord)
+                    line_edge_array = return_flash_coordinates(to_x_coord, to_y_coord, cairo_context.get_line_width(), num_flash_points)
+                    print(line_edge_array)
+                    draw_trace(line_edge_array, cairo_context)
+                    # cairo_context.move_to(to_x_coord, to_y_coord) 
+                    # cairo_context.line_to(to_x_coord, to_y_coord)
 
                 # This tells the drawline function where the last known coord was and is useful to make the D03 work properly later.
                 last_x_coord = to_x_coord 
