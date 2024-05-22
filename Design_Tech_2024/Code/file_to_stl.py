@@ -1,5 +1,3 @@
-import os
-import cairo
 import re
 import math
 import numpy as np
@@ -100,83 +98,55 @@ def return_flash_coordinates(x_coord, y_coord, current_width, num_flash_points):
 
     return return_point_list
 
-# draws the trace from start to finish, capping off the end.
-def draw_trace(point_list, cairo_context):
-    cairo_context.set_line_width(1) 
-    cairo_context.set_source_rgba(0, 1, 1, 1)
-    # Running through the commands
-    cairo_context.move_to(point_list[0][0], point_list[0][1])
-    for point in point_list: 
-        cairo_context.line_to(point[0], point[1])
-    cairo_context.line_to(point_list[0][0], point_list[0][1])
-    cairo_context.stroke()
-
-def stl_creator(gerber_file_path, gerber_file_name, settings):
+# this is the main loop with everything in it, it calls all the other functions in this.
+def stl_creator(gerber_file_path, gerber_file_name, vector_scale_factor, ):
     gerber_file_extensionless = gerber_file_name.partition(".")[0]
-    # print(f"./Design_Tech_2024/Vectors/{gerber_file_extensionless}.svg")
-    with cairo.SVGSurface(f"./Design_Tech_2024/Vectors/{gerber_file_extensionless}.svg", 1500, 1500) as svg_layer: 
-        # user variables to be set
-        vector_scale_factor = 500
-        num_circle_points = 1 # this is the number of points in the end cap circles of the traces
-        num_flash_points = 4 # this is the number of points in a cirlce cannot be below 3 and must be even.
-        layer_height = 10
-        # getting variables ready
-        cairo_context = cairo.Context(svg_layer)
-        gerber_file = open(gerber_file_path, "r")   
-        instruction_array = gerber_file.readlines()
-        aperture_instruction_dict = {}
-        instruction_string = "".join(instruction_array)
-        aperture_list = re.findall("ADD([0-9][0-9])(.*)?/*%", instruction_string) 
-        scale = int(re.findall("FSLAX[1-6]([1-9])Y", instruction_string)[0])
-        current_aperture = "NaN" 
-        last_x_coord = 0 # setting this for later because of weird for loop behavior.
-        last_y_coord = 0
-        mesh_list = []
+    # user variables to be set
+    vector_scale_factor = 500
+    num_circle_points = 10 # this is the number of points in the end cap circles of the traces
+    num_flash_points = 20 # this is the number of points in a cirlce cannot be below 3 and must be even.
+    layer_height = 10
+    # getting variables ready
+    gerber_file = open(gerber_file_path, "r")   
+    instruction_array = gerber_file.readlines()
+    aperture_instruction_dict = {}
+    instruction_string = "".join(instruction_array)
+    aperture_list = re.findall("ADD([0-9][0-9])(.*)?/*%", instruction_string) 
+    scale = int(re.findall("FSLAX[1-6]([1-9])Y", instruction_string)[0])
+    current_aperture = "NaN" 
+    last_x_coord = 0 # setting this for later because of weird for loop behavior.
+    last_y_coord = 0
+    mesh_list = []
 
-        for aperture in aperture_list:
-            aperture_instruction_dict[aperture[0]] = aperture[1].split(",") # makes an aperture with the shape information and the size information
-        for instruction in instruction_array:
-            if re.match(".*D([1-9][0-9]).*", instruction):
-                #print("stroke!")
-                current_aperture = re.findall(".*D([1-9][0-9]).*", instruction)[0] # This gives the number of the current aperture: that can be fed into the known dict to get the width and the shape
-                cairo_context.stroke() # outputting each line/shape here onto the canvas
- 
-            if instruction.startswith("X"):
-                cairo_context.set_line_width(float(aperture_instruction_dict[current_aperture][1].replace("*", ""))*vector_scale_factor) 
-                cairo_context.set_source_rgba(0, 0, 1, 1)
-                cairo_context.set_line_cap(1)
-                to_x_coord = float(re.findall("X(.*)Y", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
-                to_y_coord = float(re.findall("Y(.*)D", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
-                #print(f"current coordinates: y: {to_y_coord} x: {to_x_coord}  using aperture {current_aperture} with width of {cairo_context.get_line_width()}")
+    for aperture in aperture_list:
+        aperture_instruction_dict[aperture[0]] = aperture[1].split(",") # makes an aperture with the shape information and the size information
+    for instruction in instruction_array:
+        if re.match(".*D([1-9][0-9]).*", instruction):
+            current_aperture = re.findall(".*D([1-9][0-9]).*", instruction)[0] # This gives the number of the current aperture: that can be fed into the known dict to get the width and the shape
 
-                if re.match(".*D01.*", instruction):
-                    line_edge_array = return_line_coordinates(to_x_coord, to_y_coord, last_x_coord, last_y_coord, cairo_context.get_line_width(), num_circle_points)
-                    mesh_list.append(triangle_solver(line_edge_array, layer_height))
-                    draw_trace(line_edge_array, cairo_context)
-                    cairo_context.set_source_rgba(0, 1, 0, 1)
+        if instruction.startswith("X"):
+            to_x_coord = float(re.findall("X(.*)Y", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
+            to_y_coord = float(re.findall("Y(.*)D", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
+            current_width = float(aperture_instruction_dict[current_aperture][1].replace("*", ""))*vector_scale_factor
 
-                if re.match(".*D02.*", instruction):
-                    cairo_context.move_to(to_x_coord, to_y_coord)
+            if re.match(".*D01.*", instruction):
+                line_edge_array = return_line_coordinates(to_x_coord, to_y_coord, last_x_coord, last_y_coord, current_width, num_circle_points)
+                mesh_list.append(triangle_solver(line_edge_array, layer_height))
 
-                if re.match(".*D03.*", instruction): # This needs to move to a point, create a single aperture point and stop. (ie it makes a circle with the apertures width)
-                    line_edge_array = return_flash_coordinates(to_x_coord, to_y_coord, cairo_context.get_line_width(), num_flash_points)
-                    mesh_list.append(triangle_solver(line_edge_array, layer_height))
-                    draw_trace(line_edge_array, cairo_context)
-                    # cairo_context.move_to(to_x_coord, to_y_coord) 
-                    # cairo_context.line_to(to_x_coord, to_y_coord)
+            if re.match(".*D03.*", instruction): # This needs to move to a point, create a single aperture point and stop. (ie it makes a circle with the apertures width)
+                line_edge_array = return_flash_coordinates(to_x_coord, to_y_coord, current_width, num_flash_points)
+                mesh_list.append(triangle_solver(line_edge_array, layer_height))
 
-                # This tells the drawline function where the last known coord was and is useful to make the D03 work properly later.
-                last_x_coord = to_x_coord 
-                last_y_coord = to_y_coord 
-        vertices, faces = mesh_list_combiner(mesh_list)
-        # print(vertices)
-        # print(faces)
-        gerber_3d_model = stl.mesh.Mesh(np.zeros(faces.shape[0], dtype=stl.mesh.Mesh.dtype))
-        for i, f in enumerate(faces):
-            print(f)
-            for j in range(3):
-                gerber_3d_model.vectors[i][j] = vertices[f[j],:]
+            # This tells the drawline function where the last known coordinates were
+            last_x_coord = to_x_coord 
+            last_y_coord = to_y_coord 
+    vertices, faces = mesh_list_combiner(mesh_list)
 
-        # Write the mesh to file "cube.stl"
-        gerber_3d_model.save('gerber.stl')
+    gerber_3d_model = stl.mesh.Mesh(np.zeros(faces.shape[0], dtype=stl.mesh.Mesh.dtype))
+    for i, f in enumerate(faces):
+        for j in range(3):
+            gerber_3d_model.vectors[i][j] = vertices[f[j],:]
+
+    # Write the mesh to file "cube.stl"
+    gerber_3d_model.save(f'{gerber_file_extensionless}.stl')
     return "testing123"
