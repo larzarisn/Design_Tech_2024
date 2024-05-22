@@ -102,6 +102,7 @@ def return_flash_coordinates(x_coord, y_coord, current_width, num_flash_points):
 # this is the main loop with everything in it, it calls all the other functions in this.
 def stl_creator(gerber_file_path, gerber_file_name, scale_factor, num_circle_points, num_flash_points, layer_height):
     # getting variables ready
+    print(gerber_file_path)
     gerber_file_extensionless = gerber_file_name.partition(".")[0]
     gerber_file = open(gerber_file_path, "r")   
     instruction_array = gerber_file.readlines()
