@@ -14,19 +14,26 @@ def triangle_solver(point_list, height):
     # print(len(point_list))
     faces = np.array([[len(point_list)*2-2, len(point_list)*2-1, 1],[len(point_list)*2-2, 0, 1]])
 
+    # this calculates the triangles for the top/bottom.
+    # it loops over the amount of triangles it has to make, and fills them in.
+    for i in range(int((len(point_list)+1)/2-1)):
+        new_faces = np.array([
+            [0+2*i, len(point_list)*2-2-2*i, len(point_list)*2-4-2*i], # bottom triangles
+            [0+2*i, 2+2*i, len(point_list)*2-4-2*i], 
+            [1+2*i, len(point_list)*2-1-2*i, len(point_list)*2-3-2*i], # top triangles
+            [1+2*i, 3+2*i, len(point_list)*2-3-2*i]
+            ])
+        faces = np.append(faces, new_faces, axis=0) # and then adds them to the existing face array
+
     for i, point in enumerate(point_list[1:]):
         triangle_connection = np.array([[i*2, i*2+1, i*2+3],[i*2, i*2+2, i*2+3]])
         faces = np.append(faces, triangle_connection, axis=0)
 
         vertice = np.array([[point[0], point[1], height], [point[0], point[1], 0]])
         vertices = np.append(vertices, vertice, axis=0)
-    trace = stl.mesh.Mesh(np.zeros(faces.shape[0], dtype=stl.mesh.Mesh.dtype))
-    for i, f in enumerate(faces):
-        for j in range(3):
-            trace.vectors[i][j] = vertices[f[j],:]
 
-    # Write the mesh to file "trace.stl"
-    trace.save('trace.stl')
+    # return the two arrays for useage later
+    return [faces, vertices]
 
 # this function finds the x and y coordinates for a circle around the the end points.
 def return_circle_coordinates(delta_x, delta_y, width, segment_length, x, y, t):
@@ -94,8 +101,8 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
     with cairo.SVGSurface(f"./Design_Tech_2024/Vectors/{gerber_file_extensionless}.svg", 1500, 1500) as svg_layer: 
         # user variables to be set
         vector_scale_factor = 500
-        num_circle_points = 1 # this is the number of points in the end cap circles of the traces
-        num_flash_points = 3 # this is the number of points in a cirlce cannot be below 3
+        num_circle_points = 10 # this is the number of points in the end cap circles of the traces
+        num_flash_points = 4 # this is the number of points in a cirlce cannot be below 3 and must be even.
         layer_height = 10
         # getting variables ready
         cairo_context = cairo.Context(svg_layer)
@@ -108,6 +115,7 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
         current_aperture = "NaN" 
         last_x_coord = 0 # setting this for later because of weird for loop behavior.
         last_y_coord = 0
+        mesh_list = []
 
         for aperture in aperture_list:
             aperture_instruction_dict[aperture[0]] = aperture[1].split(",") # makes an aperture with the shape information and the size information
