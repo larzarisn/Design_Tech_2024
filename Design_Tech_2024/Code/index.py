@@ -1,39 +1,15 @@
 # this file will be the main loop of the program, it will have the GUI and the functions linkback.
 import os
 from file_to_stl import *
+from tkinter import *
 
-folder_path = "C:/Users/lars/Desktop/Design_Tech_2024/Design_Tech_2024/Fritzing/Temp testing" # replace this with a dynamic link, will happen with GUI
+file_path = "C:/Users/lars/Desktop/Design_Tech_2024/Design_Tech_2024/Fritzing/Temp testing/ProcessingRGB_copperBottom.gbl"
+scale = 500
+trace_resolution = 1 # this is the number of points in the end cap circles of the traces
+circle_resolution = 4 # this is the number of points in a cirlce cannot be below 3 and must be even.
+height = 10
+testing = stl_creator(file_path, "ProcessingRGB_copperBottom.gbl", scale, trace_resolution, circle_resolution, height)     
 
-gerber_files = os.listdir(folder_path)
-
-gerber_layers = {}
-
-temp_file_path = "C:/Users/lars/Desktop/Design_Tech_2024/Design_Tech_2024/Fritzing/Temp testing/ProcessingRGB_copperBottom.gbl"
-testing = stl_creator(temp_file_path, "ProcessingRGB_copperBottom.gbl", 0)     
-
-# for gerber_file in gerber_files: # loop over all gerber files and sort them into layers, this will get messy, needs fixing once operational.
-#     gerber_file_path = folder_path + "/" + gerber_file
-
-#     if "bottom" in gerber_file.lower():
-#         try:
-#             testing = vector_creator(gerber_file_path, gerber_file, 0)
-#             gerber_layers["bottom"].append(gerber_file)
-#         except Exception as exception:
-#             print(exception)
-#             gerber_layers["bottom"] = [gerber_file]
-#     elif "top" in gerber_file.lower():
-#         try:
-#             # testing = file_to_vector.vector_creator(gerber_file_path, gerber_file, 0)
-#             gerber_layers["top"].append(gerber_file)
-#         except Exception as exception:
-#             print(exception)
-#             gerber_layers["top"] = [gerber_file]
-#     else:
-#         try:
-#             gerber_layers["other"].append(gerber_file)
-#         except:
-#             print("else")
-#             gerber_layers["other"] = [gerber_file]
 
 # now gerber_layers is a dict with split layers that can be used to turn the layers into independant images.
 

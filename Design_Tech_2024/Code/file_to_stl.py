@@ -100,14 +100,9 @@ def return_flash_coordinates(x_coord, y_coord, current_width, num_flash_points):
     return return_point_list
 
 # this is the main loop with everything in it, it calls all the other functions in this.
-def stl_creator(gerber_file_path, gerber_file_name, vector_scale_factor, ):
-    gerber_file_extensionless = gerber_file_name.partition(".")[0]
-    # user variables to be set
-    vector_scale_factor = 500
-    num_circle_points = 10 # this is the number of points in the end cap circles of the traces
-    num_flash_points = 20 # this is the number of points in a cirlce cannot be below 3 and must be even.
-    layer_height = 10
+def stl_creator(gerber_file_path, gerber_file_name, scale_factor, num_circle_points, num_flash_points, layer_height):
     # getting variables ready
+    gerber_file_extensionless = gerber_file_name.partition(".")[0]
     gerber_file = open(gerber_file_path, "r")   
     instruction_array = gerber_file.readlines()
     aperture_instruction_dict = {}
@@ -126,9 +121,9 @@ def stl_creator(gerber_file_path, gerber_file_name, vector_scale_factor, ):
             current_aperture = re.findall(".*D([1-9][0-9]).*", instruction)[0] # This gives the number of the current aperture: that can be fed into the known dict to get the width and the shape
 
         if instruction.startswith("X"):
-            to_x_coord = float(re.findall("X(.*)Y", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
-            to_y_coord = float(re.findall("Y(.*)D", instruction)[0])*pow(10, -1*scale)*vector_scale_factor
-            current_width = float(aperture_instruction_dict[current_aperture][1].replace("*", ""))*vector_scale_factor
+            to_x_coord = float(re.findall("X(.*)Y", instruction)[0])*pow(10, -1*scale)*scale_factor
+            to_y_coord = float(re.findall("Y(.*)D", instruction)[0])*pow(10, -1*scale)*scale_factor
+            current_width = float(aperture_instruction_dict[current_aperture][1].replace("*", ""))*scale_factor
 
             if re.match(".*D01.*", instruction):
                 line_edge_array = return_line_coordinates(to_x_coord, to_y_coord, last_x_coord, last_y_coord, current_width, num_circle_points)
