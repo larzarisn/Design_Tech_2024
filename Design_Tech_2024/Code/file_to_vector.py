@@ -2,6 +2,31 @@ import os
 import cairo
 import re
 import math
+import numpy as np
+import stl
+
+# this function makes the whole thing 3D by getting each edge position and adding a 3D component to it
+# it then calculates what the triangle verticies are that make up the faces and returns two arrays
+# one array with the actual position of the verticies, and one that says how they connect to eachother.
+def triangle_solver(point_list, height):
+    vertices = np.array([[point_list[0][0], point_list[0][1], height], [point_list[0][0], point_list[0][1], 0]])
+
+    # print(len(point_list))
+    faces = np.array([[len(point_list)*2-2, len(point_list)*2-1, 1],[len(point_list)*2-2, 0, 1]])
+
+    for i, point in enumerate(point_list[1:]):
+        triangle_connection = np.array([[i*2, i*2+1, i*2+3],[i*2, i*2+2, i*2+3]])
+        faces = np.append(faces, triangle_connection, axis=0)
+
+        vertice = np.array([[point[0], point[1], height], [point[0], point[1], 0]])
+        vertices = np.append(vertices, vertice, axis=0)
+    trace = stl.mesh.Mesh(np.zeros(faces.shape[0], dtype=stl.mesh.Mesh.dtype))
+    for i, f in enumerate(faces):
+        for j in range(3):
+            trace.vectors[i][j] = vertices[f[j],:]
+
+    # Write the mesh to file "trace.stl"
+    trace.save('trace.stl')
 
 # this function finds the x and y coordinates for a circle around the the end points.
 def return_circle_coordinates(delta_x, delta_y, width, segment_length, x, y, t):
@@ -51,6 +76,7 @@ def return_flash_coordinates(x_coord, y_coord, current_width, num_flash_points):
         return_point_list.append([x_point_gen,y_point_gen])
 
     return return_point_list
+
 # draws the trace from start to finish, capping off the end.
 def draw_trace(point_list, cairo_context):
     cairo_context.set_line_width(1) 
@@ -68,8 +94,9 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
     with cairo.SVGSurface(f"./Design_Tech_2024/Vectors/{gerber_file_extensionless}.svg", 1500, 1500) as svg_layer: 
         # user variables to be set
         vector_scale_factor = 500
-        num_circle_points = 0 # this is the number of points in the end cap circles of the traces
+        num_circle_points = 1 # this is the number of points in the end cap circles of the traces
         num_flash_points = 3 # this is the number of points in a cirlce cannot be below 3
+        layer_height = 10
         # getting variables ready
         cairo_context = cairo.Context(svg_layer)
         gerber_file = open(gerber_file_path, "r")   
@@ -100,6 +127,7 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
 
                 if re.match(".*D01.*", instruction):
                     line_edge_array = return_line_coordinates(to_x_coord, to_y_coord, last_x_coord, last_y_coord, cairo_context.get_line_width(), num_circle_points)
+                    triangle_solver(line_edge_array, layer_height)
                     draw_trace(line_edge_array, cairo_context)
                     cairo_context.set_source_rgba(0, 1, 0, 1)
 
@@ -108,7 +136,6 @@ def vector_creator(gerber_file_path, gerber_file_name, settings):
 
                 if re.match(".*D03.*", instruction): # This needs to move to a point, create a single aperture point and stop. (ie it makes a circle with the apertures width)
                     line_edge_array = return_flash_coordinates(to_x_coord, to_y_coord, cairo_context.get_line_width(), num_flash_points)
-                    print(line_edge_array)
                     draw_trace(line_edge_array, cairo_context)
                     # cairo_context.move_to(to_x_coord, to_y_coord) 
                     # cairo_context.line_to(to_x_coord, to_y_coord)
