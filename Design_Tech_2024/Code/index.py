@@ -1,6 +1,6 @@
 # this file will be the main loop of the program, it will have the GUI and the functions linkback.
 import os
-from file_to_vector import *
+from file_to_stl import *
 
 folder_path = "C:/Users/lars/Desktop/Design_Tech_2024/Design_Tech_2024/Fritzing/Temp testing" # replace this with a dynamic link, will happen with GUI
 
@@ -9,7 +9,7 @@ gerber_files = os.listdir(folder_path)
 gerber_layers = {}
 
 temp_file_path = "C:/Users/lars/Desktop/Design_Tech_2024/Design_Tech_2024/Fritzing/Temp testing/ProcessingRGB_copperBottom.gbl"
-testing = vector_creator(temp_file_path, "ProcessingRGB_copperBottom.gbl", 0)     
+testing = stl_creator(temp_file_path, "ProcessingRGB_copperBottom.gbl", 0)     
 
 # for gerber_file in gerber_files: # loop over all gerber files and sort them into layers, this will get messy, needs fixing once operational.
 #     gerber_file_path = folder_path + "/" + gerber_file
