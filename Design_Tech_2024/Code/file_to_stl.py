@@ -27,21 +27,22 @@ def triangle_solver(point_list, height):
     vertices = np.array([[point_list[0][0], point_list[0][1], height], [point_list[0][0], point_list[0][1], 0]])
 
     # print(len(point_list))
-    faces = np.array([[len(point_list)*2-2, len(point_list)*2-1, 1],[len(point_list)*2-2, 0, 1]])
+    faces = np.array([[len(point_list)*2-2, len(point_list)*2-1, 1],[len(point_list)*2-2, 1, 0]])
 
     # this calculates the triangles for the top/bottom.
     # it loops over the amount of triangles it has to make, and fills them in.
+    # note to self, triangles have to be listed in clockwise order.
     for i in range(int((len(point_list)+1)/2-1)):
         new_faces = np.array([
-            [0+2*i, len(point_list)*2-2-2*i, len(point_list)*2-4-2*i], # bottom triangles
+            [0+2*i, len(point_list)*2-4-2*i, len(point_list)*2-2-2*i], # bottom triangles
             [0+2*i, 2+2*i, len(point_list)*2-4-2*i], 
             [1+2*i, len(point_list)*2-1-2*i, len(point_list)*2-3-2*i], # top triangles
-            [1+2*i, 3+2*i, len(point_list)*2-3-2*i]
+            [1+2*i, len(point_list)*2-3-2*i, 3+2*i]
             ])
         faces = np.append(faces, new_faces, axis=0) # and then adds them to the existing face array
 
     for i, point in enumerate(point_list[1:]):
-        triangle_connection = np.array([[i*2, i*2+1, i*2+3],[i*2, i*2+2, i*2+3]])
+        triangle_connection = np.array([[i*2, i*2+1, i*2+3],[i*2, i*2+3, i*2+2]])
         faces = np.append(faces, triangle_connection, axis=0)
 
         vertice = np.array([[point[0], point[1], height], [point[0], point[1], 0]])
@@ -148,5 +149,5 @@ def stl_creator(gerber_file_path, gerber_file_name, vector_scale_factor, ):
             gerber_3d_model.vectors[i][j] = vertices[f[j],:]
 
     # Write the mesh to file "cube.stl"
-    gerber_3d_model.save(f'{gerber_file_extensionless}.stl')
+    gerber_3d_model.save(f'Output 3D models/{gerber_file_extensionless}.stl')
     return "testing123"
