@@ -144,6 +144,7 @@ def stl_creator(gerber_file_path, gerber_file_name, scale_factor, num_circle_poi
         for j in range(3):
             gerber_3d_model.vectors[i][j] = vertices[f[j],:]
 
-    # Write the mesh to file "cube.stl"
-    gerber_3d_model.save(f'Design_Tech_2024/Output 3D models/{gerber_file_extensionless}.stl')
+    # Write the mesh to file
+    print(f'./{gerber_file_extensionless}.stl')
+    gerber_3d_model.save(f'./Output 3D models/{gerber_file_extensionless}.stl')
     return "testing123"
