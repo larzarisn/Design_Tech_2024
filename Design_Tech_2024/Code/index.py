@@ -16,7 +16,7 @@ def browse_files():
         initialdir = "./",
         title = "Select a Gerber file",
     )
-    current_file_text_box.configure(text=file_path)
+    current_file_text_box.configure(text=file_path.split("/")[-1])
 
 def call_file_to_stl():
     if file_path == "NaN":
@@ -42,21 +42,28 @@ def height_change():
 
 root = Tk()
 
+root.geometry("600x350")
+root.minsize(600, 350)
+root.maxsize(600, 350)
 root.title("Geber to STL")
 
 # adding the title
 title = Label(root, text= "Gerber to STL")
 title.config(font=("Arial", 25))
 
+file_text_frame = Frame()
+
 current_file_text_box = Label(
     root,
     padx = 10,
-    height = 2,
-    width= 100,
+    width= 50,
+    height=2,
     bg="white",
     bd=3,
     font=("Arial", 12),
-    text="Input gerber file path"
+    text="Input gerber file path",
+    borderwidth=1,
+    relief="solid"
 )
 
 
@@ -74,10 +81,11 @@ scale_var = DoubleVar(value=scale)
 scale_label = Label(
     root,
     padx = 10,
-    bg="white",
-    bd=3,
     font=("Arial", 12),
-    text="scale: ")
+    text="Scale: ",
+    anchor="w",
+    width=12,
+    )
 scale_spinbox = Spinbox(
     root,
     from_= 0,
@@ -93,10 +101,11 @@ trace_resolution_var = DoubleVar(value=trace_resolution)
 trace_resolution_label = Label(
     root,
     padx = 10,
-    bg="white",
-    bd=3,
     font=("Arial", 12),
-    text="trace resolution:")
+    text="Trace resolution:",
+    anchor="w",
+    width=12,
+    )
 trace_resolution_spinbox = Spinbox(
     root,
     from_= 0,
@@ -112,10 +121,11 @@ height_var = DoubleVar(value=height)
 height_label = Label(
     root,
     padx = 10,
-    bg="white",
-    bd=3,
     font=("Arial", 12),
-    text="height: ")
+    text="Height: ",
+    anchor="w",
+    width=12,
+    )
 height_spinbox = Spinbox(
     root,
     from_= 0,
@@ -131,10 +141,12 @@ circle_resolution_var = DoubleVar(value=circle_resolution)
 circle_resolution_label = Label(
     root,
     padx = 10,
-    bg="white",
     bd=3,
     font=("Arial", 12),
-    text="circle_resolution: ")
+    text="Circle resolution: ",
+    anchor="w",
+    width=12
+    )
 circle_resolution_spinbox = Spinbox(
     root,
     from_= 0,
@@ -167,17 +179,24 @@ convert_button = Button(
 )
 
 
-title.grid(column=1, row = 1, pady=20)
-current_file_text_box.grid(column=1, row=2, pady=0, padx=20)
-browse_button.grid(column=1, row=3, pady=0)
-scale_label.grid(column=1, row= 4, pady=20, padx=20)
-scale_spinbox.grid(column=2, row= 4, pady=20)
-trace_resolution_label.grid(column=1, row= 5, pady=20)
-trace_resolution_spinbox.grid(column=2, row= 5, pady=20)
-circle_resolution_label.grid(column=1, row= 6, pady=20)
-circle_resolution_spinbox.grid(column=2, row= 6, pady=20)
-height_label.grid(column=1, row= 7, pady=20)
-height_spinbox.grid(column=2, row= 7, pady=20)
-convert_button.grid(column=1, row=8, padx=20, pady=20)
+title.grid(column=0, row = 0, columnspan=4 ,pady=20)
+
+current_file_text_box.grid(column=0, row=1, pady=10, padx=(35, 0), columnspan=2)
+
+browse_button.grid(column=2, row=1, pady=0)
+
+scale_label.grid(column=0, row= 2, padx=20, sticky="E")
+scale_spinbox.grid(column=1, row= 2, sticky="W")
+
+trace_resolution_label.grid(column=0, row= 3, padx=20, sticky="E")
+trace_resolution_spinbox.grid(column=1, row= 3, sticky="W")
+
+circle_resolution_label.grid(column=0, row= 4, padx=20, sticky="E")
+circle_resolution_spinbox.grid(column=1, row= 4, sticky="W")
+
+height_label.grid(column=0, row= 5, padx=20, sticky="E")
+height_spinbox.grid(column=1, row= 5, sticky="W")
+
+convert_button.grid(column=0, row=6, padx=20, pady=20, columnspan=4)
 
 root.mainloop()
