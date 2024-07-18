@@ -23,7 +23,7 @@ Navigate to the location of these files on your computer
 
 You can then run the code using:
 ```bash
-python Code/index.py
+python index.py
 ```
 
 From there select your preferences for how the 3D models will be generated, as well as selecting which gerber file you are turning into a 3D model.
