@@ -43,8 +43,6 @@ def height_change():
 root = Tk()
 
 root.geometry("600x350")
-root.minsize(600, 350)
-root.maxsize(600, 350)
 root.title("Geber to STL")
 
 # adding the title

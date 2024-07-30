@@ -148,3 +148,10 @@ def stl_creator(gerber_file_path, gerber_file_name, scale_factor, num_circle_poi
     print(f'./{gerber_file_extensionless}.stl')
     gerber_3d_model.save(f'./Output 3D models/{gerber_file_extensionless}.stl')
     return "testing123"
+
+file_path = "./Example gerber files/ProcessingRGB_copperBottom.gbl"
+scale = 500
+trace_resolution = 1 # this is the number of points in the end cap circles of the traces
+circle_resolution = 4 # this is the number of points in a cirlce cannot be below 3 and must be even.
+height = 10
+stl_creator(file_path, file_path.split("/")[-1], scale, trace_resolution, circle_resolution, height)
