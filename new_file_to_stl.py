@@ -7,7 +7,7 @@ from file_to_stl import return_line_coordinates
 from file_to_stl import mesh_list_combiner
 from file_to_stl import triangle_solver
 
-def shape_intersection_checker(shape1, shape2):
+def shape_intersection_finder(shape1, shape2):
     for vertice1 in shape1:
         for vertice3 in shape2:
             balls
@@ -33,7 +33,7 @@ def shape_sorter(shape_list):
             combined_shape = temp_shape_list[0]
             temp_shape_list.pop(0)
             for i, shape in enumerate(temp_shape_list):
-                if shape_intersection_checker(shape, shape_list[0]):
+                if shape_intersection_finder(shape, shape_list[0]) == False:
                     combined_shape = shape_combiner(shape_list[0], shape)
                     temp_shape_list.pop(i)
                     break

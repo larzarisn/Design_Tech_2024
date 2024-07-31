@@ -1,5 +1,4 @@
 # this file will be the main loop of the program, it will have the GUI and the functions linkback.
-import os
 from file_to_stl import *
 from tkinter import *
 from tkinter import filedialog
@@ -42,8 +41,8 @@ def height_change():
 
 root = Tk()
 
-root.geometry("600x350")
 root.title("Geber to STL")
+root.resizable(0, 0)
 
 # adding the title
 title = Label(root, text= "Gerber to STL")
@@ -173,7 +172,7 @@ convert_button = Button(
     padx=10,
     pady=5,
     width=15,
-    wraplength=100
+    # wraplength=100
 )
 
 
