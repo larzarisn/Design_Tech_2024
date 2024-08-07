@@ -147,4 +147,4 @@ def stl_creator(gerber_file_path, gerber_file_name, scale_factor, num_circle_poi
     # Write the mesh to file
     print(f'./{gerber_file_extensionless}.stl')
     gerber_3d_model.save(f'./Output 3D models/{gerber_file_extensionless}.stl')
-    return "testing123"
+    return f'./Output 3D models/{gerber_file_extensionless}.stl'

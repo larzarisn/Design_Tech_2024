@@ -3,7 +3,7 @@ from file_to_stl import *
 from tkinter import *
 from tkinter import filedialog
 file_path = "NaN"
-scale = 500
+scale = 1
 trace_resolution = 1 # this is the number of points in the end cap circles of the traces
 circle_resolution = 4 # this is the number of points in a cirlce cannot be below 3 and must be even.
 height = 10
@@ -12,7 +12,7 @@ height = 10
 def browse_files():
     global file_path
     file_path = filedialog.askopenfilename(
-        initialdir = "./",
+        initialdir = "./Example gerber files/",
         title = "Select a Gerber file",
     )
     current_file_text_box.configure(text=file_path.split("/")[-1])
@@ -21,7 +21,10 @@ def call_file_to_stl():
     if file_path == "NaN":
         return
     # print(file_path.split("/")[-1])
-    stl_creator(file_path, file_path.split("/")[-1], scale, trace_resolution, circle_resolution, height)
+    file_location = stl_creator(file_path, file_path.split("/")[-1], scale, trace_resolution, circle_resolution, height)
+    print(file_location)
+    output_file_text_label.grid(column=0, row=7, padx=20, pady=20, columnspan=4)
+    output_file_text_label.configure(text="Location: " + file_location)
 
 def scale_change():
     global scale
@@ -175,12 +178,22 @@ convert_button = Button(
     # wraplength=100
 )
 
+output_file_text_label = Label(
+    root,
+    padx = 10,
+    width= 50,
+    height=2,
+    font=("Arial", 12),
+    text="Output file location",
+)
+
+
 
 title.grid(column=0, row = 0, columnspan=4 ,pady=20)
 
 current_file_text_box.grid(column=0, row=1, pady=10, padx=(35, 0), columnspan=2)
 
-browse_button.grid(column=2, row=1, pady=0)
+browse_button.grid(column=2, row=1, padx=(0, 20), pady=0)
 
 scale_label.grid(column=0, row= 2, padx=20, sticky="E")
 scale_spinbox.grid(column=1, row= 2, sticky="W")
@@ -194,6 +207,6 @@ circle_resolution_spinbox.grid(column=1, row= 4, sticky="W")
 height_label.grid(column=0, row= 5, padx=20, sticky="E")
 height_spinbox.grid(column=1, row= 5, sticky="W")
 
-convert_button.grid(column=0, row=6, padx=20, pady=20, columnspan=4)
+convert_button.grid(column=0, row=6, padx=20, pady=10, columnspan=4)
 
 root.mainloop()
