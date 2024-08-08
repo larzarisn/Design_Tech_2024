@@ -16,22 +16,22 @@ pip install numpy-stl
 
 ## Usage
 
-Open Command prompt or Terminal depending on which operating system you use.
+1. Open Command prompt or Terminal depending on which operating system you use.
 
-Navigate to the location of these files on your computer:
+2. Navigate to the location of these files on your computer:
 
 (On windows to navigate in the command prompt, use "cd {folder name}" to move between folders, "cd .." to go back a folder and "dir" to list folders you can navigate to.)
 
-You can then run the code using:
+3. You can then run the code using:
 ```bash
 python index.py
 ```
 
-From there select your preferences for how the 3D models will be generated, as well as selecting which gerber file you are turning into a 3D model.
+4. From there select your preferences for how the 3D models will be generated, as well as selecting which gerber file you are turning into a 3D model.
 
-Finally click convert and the stl 3D model will be generated in ./Output 3D models/. (which is inside the project folder)
+5. Finally click convert and the stl 3D model will be generated in ./Output 3D models/. (which is inside the project folder)
 
-From there load the model into a 3D slicer of your choice and follow your printers instructions. 
+6. From there load the model into a 3D slicer of your choice and follow your printers instructions. 
 
 ## Making negatives with blender (Advanced only)
 If you want an inlaid 3D model, the easiest method I have found follows this video: [https://www.youtube.com/watch?v=57CmROIJP6w](https://www.youtube.com/watch?v=57CmROIJP6w):
