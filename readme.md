@@ -14,11 +14,6 @@ This requires a 3D printer, preferably a dual nozzle one (as this will allow you
 pip install numpy-stl
 ```
 
-5. Install Tkinter:
-```bash
-pip install Tkinter
-```
-
 ## Usage
 
 Open Command prompt or Terminal depending on which operating system you use.
@@ -38,4 +33,8 @@ Finally click convert and the stl 3D model will be generated in ./Output 3D mode
 
 From there load the model into a 3D slicer of your choice and follow your printers instructions. 
 
-If you want an inlaid 3D model, the easiest method I have found follows this video: [https://www.youtube.com/watch?v=57CmROIJP6w](https://www.youtube.com/watch?v=57CmROIJP6w).
+## Making negatives with blender (Advanced only)
+If you want an inlaid 3D model, the easiest method I have found follows this video: [https://www.youtube.com/watch?v=57CmROIJP6w](https://www.youtube.com/watch?v=57CmROIJP6w):
+1. Load the model into blender by importing the STL you have just generated
+2. Use the create box tool in blender to create a box that entirely encompasses the STL
+3. Select the box and in the bottom right of the screen select modify and boolean and select the STL you loaded as the boolean object.
