@@ -12,18 +12,23 @@ height = 10
 def browse_files():
     global file_path
     file_path = filedialog.askopenfilename(
-        initialdir = "./Example gerber files/",
+        initialdir = "./Example gerber files",
         title = "Select a Gerber file",
     )
     current_file_text_box.configure(text=file_path.split("/")[-1])
 
 def call_file_to_stl():
     if file_path == "NaN":
+        output_file_text_label.grid(column=0, row=7, padx=20, pady=20, columnspan=4)
+        output_file_text_label.configure(text="Please select a Gerber file")
         return
-    # print(file_path.split("/")[-1])
-    file_location = stl_creator(file_path, file_path.split("/")[-1], scale, trace_resolution, circle_resolution, height)
-    print(file_location)
     output_file_text_label.grid(column=0, row=7, padx=20, pady=20, columnspan=4)
+    output_file_text_label.configure(text="Generating.....")
+    # print(file_path.split("/")[-1])
+    try:
+        file_location = stl_creator(file_path, file_path.split("/")[-1], scale, trace_resolution, circle_resolution, height)
+    except Exception as exception:
+        output_file_text_label.configure(text="Please select a valid Gerber file") 
     output_file_text_label.configure(text="Location: " + file_location)
 
 def scale_change():

@@ -4,15 +4,20 @@
 
 This requires a 3D printer, preferably a dual nozzle one (as this will allow you to print without swapping filaments constantly.) with both conductive and non-conductive filaments.
 
-## Installation
+## Installation (Windows)
 
-Download and install python onto your computer from https://www.python.org/downloads/ .
+1. Download and install python onto your computer from https://www.python.org/downloads/ .
 
-Download the 3D printed circuit board files onto a known location on your computer. 
+2. Download the 3D printed circuit board files onto a known location on your computer. 
 
-Run the command to install numpy-stl, a required library for this system:
+3. Run the following command to install numpy-stl, a required library for this system:
 ```bash
 pip install numpy-stl
+```
+
+4. Install Tkinter:
+```bash
+pip install Tkinter
 ```
 
 ## Usage
@@ -28,8 +33,8 @@ python index.py
 
 From there select your preferences for how the 3D models will be generated, as well as selecting which gerber file you are turning into a 3D model.
 
-Finally click convert and the stl 3D model will be generated in /Output 3D models/.
+Finally click convert and the stl 3D model will be generated in ./Output 3D models/. (which is inside the project folder)
 
-From there load the model into a 3D slicer of your choice and print or if you want an inlaid 3D model put the file in blender and make a mold, export the mold and import both the original and the mold to your slicer. In future the generation of a negative image will be automated by this system.
+From there load the model into a 3D slicer of your choice and follow your printers instructions. 
 
-Done!
+If you want an inlaid 3D model, the easiest method I have found follows this video: [https://www.youtube.com/watch?v=57CmROIJP6w](https://www.youtube.com/watch?v=57CmROIJP6w).
