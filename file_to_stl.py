@@ -128,11 +128,11 @@ def stl_creator(gerber_file_path, gerber_file_name, scale_factor, num_circle_poi
 
             if re.match(".*D01.*", instruction):
                 line_edge_array = return_line_coordinates(to_x_coord, to_y_coord, last_x_coord, last_y_coord, current_width, num_circle_points)
-                mesh_list.append(triangle_solver(line_edge_array, layer_height))
+                mesh_list.append(triangle_solver(line_edge_array, layer_height*pow(10, -1*scale)*scale_factor))
 
             if re.match(".*D03.*", instruction): # This needs to move to a point, create a single aperture point and stop. (ie it makes a circle with the apertures width)
                 line_edge_array = return_flash_coordinates(to_x_coord, to_y_coord, current_width, num_flash_points)
-                mesh_list.append(triangle_solver(line_edge_array, layer_height))
+                mesh_list.append(triangle_solver(line_edge_array, layer_height*pow(10, -1*scale)*scale_factor))
 
             # This tells the drawline function where the last known coordinates were
             last_x_coord = to_x_coord 

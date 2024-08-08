@@ -5,17 +5,16 @@
 This requires a 3D printer, preferably a dual nozzle one (as this will allow you to print without swapping filaments constantly.) with both conductive and non-conductive filaments.
 
 ## Installation (Windows)
+1. Download the 3D printed circuit board files onto a known location on your computer. Click "Code" on github and Download zip to download it. Then extract it from the zip file it is in.
 
-1. Download and install python onto your computer from https://www.python.org/downloads/ .
+2. Download and install python, on the first screen on opening the .exe file make sure to tick the "Add python.exe to PATH" selection box and then continue the installation onto your computer from [https://www.python.org/downloads/](https://www.python.org/downloads/).
 
-2. Download the 3D printed circuit board files onto a known location on your computer. 
-
-3. Run the following command to install numpy-stl, a required library for this system:
+4. Open command prompt in the windows search and run the following command to install numpy-stl, a required library for this system:
 ```bash
 pip install numpy-stl
 ```
 
-4. Install Tkinter:
+5. Install Tkinter:
 ```bash
 pip install Tkinter
 ```
@@ -24,7 +23,9 @@ pip install Tkinter
 
 Open Command prompt or Terminal depending on which operating system you use.
 
-Navigate to the location of these files on your computer
+Navigate to the location of these files on your computer:
+
+(On windows to navigate in the command prompt, use "cd {folder name}" to move between folders, "cd .." to go back a folder and "dir" to list folders you can navigate to.)
 
 You can then run the code using:
 ```bash

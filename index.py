@@ -4,8 +4,8 @@ from tkinter import *
 from tkinter import filedialog
 file_path = "NaN"
 scale = 1
-trace_resolution = 1 # this is the number of points in the end cap circles of the traces
-circle_resolution = 4 # this is the number of points in a cirlce cannot be below 3 and must be even.
+trace_resolution = 10 # this is the number of points in the end cap circles of the traces
+circle_resolution = 10 # this is the number of points in a cirlce cannot be below 3 and must be even.
 height = 10
 # testing = stl_creator(file_path, "ProcessingRGB_copperBottom.gbl", scale, trace_resolution, circle_resolution, height)     
 
@@ -37,11 +37,11 @@ def scale_change():
 
 def trace_resolution_change():
     global trace_resolution
-    trace_resolution = int(trace_resolution.get())
+    trace_resolution = int(trace_resolution_spinbox.get())
 
 def circle_resolution_change():
     global circle_resolution
-    circle_resolution = int(circle_resolution_spinbox.get()*2)
+    circle_resolution = int(circle_resolution_spinbox.get())*2
 
 def height_change():
     global height
@@ -113,7 +113,7 @@ trace_resolution_label = Label(
     )
 trace_resolution_spinbox = Spinbox(
     root,
-    from_= 0,
+    from_= 1,
     to=1000,
     width=10,
     font=("Arial", 12),
@@ -133,7 +133,7 @@ height_label = Label(
     )
 height_spinbox = Spinbox(
     root,
-    from_= 0,
+    from_= 1,
     to=1000,
     width=10,
     font=("Arial", 12),
